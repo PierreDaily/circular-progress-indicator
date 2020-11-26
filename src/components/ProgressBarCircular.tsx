@@ -69,13 +69,16 @@ interface Props {
   progress: number
 };
 
-const ProgressBarCircular: React.FC<Props> = ({ colour1, colour2, progress }) => (
-  <Container>
-    <SVG width="300" height="200">
-      <Circle1 cx="70" cy="70" r="70" colour={colour1}></Circle1>
-      <Circle2 cx="70" cy="70" r="70" colour={colour2} progress={progress}></Circle2>
-    </SVG>
-  </Container>
-);
+const ProgressBarCircular: React.FC<Props> = ({ colour1, colour2, progress }) => {
+  const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
+  return (
+    <Container>
+      <SVG width="300" height="200">
+        <Circle1 cx="70" cy="70" r="70" colour={colour1}></Circle1>
+        <Circle2 cx="70" cy="70" r="70" colour={colour2} progress={filteredProgress}></Circle2>
+      </SVG>
+    </Container>
+  );
+};
 
 export { ProgressBarCircular };
