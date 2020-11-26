@@ -6,7 +6,7 @@ import { ProgressBarCircular } from './components/ProgressBarCircular';
 function App() {
   return (
     <div className="App">
-      <ProgressBarCircular colour1="pink" colour2="orange" progress={-50} />
+      <ProgressBarCircular colour1="pink" colour2="orange" progress={78} />
     </div>
   );
 }

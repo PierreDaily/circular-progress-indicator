@@ -23,10 +23,6 @@ const Circle = styled.circle`
   fill: none;
   stroke-width: var(--stroke-width);
   stroke-dasharray: var(--progress-bar-stroke-offset);
-  transform: translate(
-    calc(var(--stroke-width) / 2),
-    calc(var(--stroke-width) / 2)
-  );
 `;
 
 interface Circle1Props {
@@ -50,17 +46,23 @@ const Circle2 = styled(Circle) <Circle2Props>`
     var(--progress-bar-stroke-offset) -
       ((var(--progress-bar-stroke-offset) / 100) * ${props => props.progress})
   );
+  transform-origin: center;
+  transform: rotate(-90deg);
 `;
 
 const Container = styled.div`
   --progress-bar-stroke-offset: 440;
   --stroke-width: 10px;
-
+  position: relative;
   width: 50%;
+
+  text {
+    font-size: 3rem;
+  }
 `;
 
 const SVG = styled.svg`
-  transform: rotate(-90deg);
+  // transform: rotate(-90deg);
 `;
 
 interface Props {
@@ -73,10 +75,11 @@ const ProgressBarCircular: React.FC<Props> = ({ colour1, colour2, progress }) =>
   const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
   return (
     <Container>
-      <SVG width="300" height="200">
-        <Circle1 cx="70" cy="70" r="70" colour={colour1}></Circle1>
-        <Circle2 cx="70" cy="70" r="70" colour={colour2} progress={filteredProgress}></Circle2>
-      </SVG>
+      <SVG viewBox="0 0 150 150">
+        <Circle1 cx="75" cy="75" r="70" colour={colour1}></Circle1>
+        <Circle2 cx="75" cy="75" r="70" colour={colour2} progress={filteredProgress}></Circle2>
+        <text x="50%" y="55%" text-anchor="middle">{filteredProgress}</text>
+      </SVG >
     </Container>
   );
 };
