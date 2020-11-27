@@ -41,6 +41,7 @@ interface Circle1Props {
 }
 
 const Circle1 = styled(Circle) <Circle1Props>`
+  opacity: 0.5;
   stroke: ${(props) => props.color || "red"};
   stroke-dashoffset: 0;
 `;
@@ -55,8 +56,7 @@ const Circle2 = styled(Circle) <Circle2Props>`
         ${animateCircle(props.progress)}
       `}
     2s linear;
-
-  stroke: ${(props) => props.color || "blue"};
+  stroke: url(#MyGradient);
   stroke-dashoffset: calc(
     var(--progress-bar-stroke-offset) -
       ((var(--progress-bar-stroke-offset) / 100) * ${(props) => props.progress})
@@ -71,7 +71,6 @@ interface SVGProps {
 }
 
 const SVG = styled.svg <SVGProps>`
-  // transform: rotate(-90deg);
   --progress-bar-stroke-offset: 440;
   --stroke-width: 10px;
   position: relative;
@@ -101,6 +100,10 @@ const ProgressBarCircular: React.FC<Props> = ({
   const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
   return (
     <SVG viewBox="0 0 150 150" color1={color1} color2={color2}>
+      <linearGradient id="MyGradient">
+        <stop offset="0%" stop-color={color1} />
+        <stop offset="100%" stop-color={color2} />
+      </linearGradient>
       <Circle1 cx="75" cy="75" r="70" color={color1}></Circle1>
       <Circle2
         cx="75"
