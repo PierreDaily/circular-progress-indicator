@@ -100,7 +100,7 @@ const ProgressBarCircular: React.FC<Props> = ({
   const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
   return (
     <SVG viewBox="0 0 150 150" color1={color1} color2={color2}>
-      <linearGradient id="MyGradient">
+      <linearGradient id="MyGradient" gradientTransform="rotate(90)">
         <stop offset="0%" stop-color={color1} />
         <stop offset="100%" stop-color={color2} />
       </linearGradient>
