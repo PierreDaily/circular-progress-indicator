@@ -1,12 +1,13 @@
-# Getting Started with Create React App
+# Circular Progress Bar
 
 Yet another Circular progress bar React component build with Typescript, SVG, CSS and gradient.
 A demo is available here: https://pedantic-wright-d0262a.netlify.app
 
 ## Props
-* color1: **string**,first color of the linear gradient.
-* color2: **string**, second color of the linear gradient.
-* progress: **number**, 0-100.
+
+- color1: **string**,first color of the linear gradient.
+- color2: **string**, second color of the linear gradient.
+- progress: **number**, 0-100.
 
 ## Available Scripts
 
@@ -21,4 +22,3 @@ The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
 ### `yarn build`
-
