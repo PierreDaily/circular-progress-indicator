@@ -98,7 +98,7 @@ const ProgressBarCircular: React.FC<Props> = ({ color1, color2, duration = 4000,
   const gradientIdRef = useRef(uuidv4());
   const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
 
-  const requestRef = React.useRef(2);
+  const requestRef = React.useRef(0);
 
   const animate = useCallback(
     (time: number) => {
@@ -113,7 +113,7 @@ const ProgressBarCircular: React.FC<Props> = ({ color1, color2, duration = 4000,
         requestRef.current = requestAnimationFrame(animate);
       }
     },
-    [filteredProgress]
+    [duration, filteredProgress]
   );
 
   useEffect(() => {
