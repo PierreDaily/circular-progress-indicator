@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
+import { v4 as uuidv4 } from 'uuid';
+
+
 
 const strokeOffset = 440;
 const strokeWidth = "10px";
@@ -54,7 +57,6 @@ const Circle2 = styled(Circle) <Circle2Props>`
         ${animateCircle(props.progress)}
       `}
     2s linear;
-  stroke: url(#MyGradient);
   stroke-dashoffset: ${(props) => strokeOffset - (strokeOffset / 100) * props.progress};
   transform-origin: center;
   transform: rotate(-90deg);
@@ -91,15 +93,17 @@ const ProgressBarCircular: React.FC<Props> = ({
   progress,
 }) => {
   const [percentage, setPercentage] = useState(0);
+  const gradientIdRef = useRef(uuidv4());
   const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
   useEffect(() => {
     if (percentage < filteredProgress) {
       setTimeout(() => setPercentage((oldState) => oldState + 1), 2000 / (filteredProgress));
     }
-  }, [percentage, filteredProgress])
+  }, [percentage, filteredProgress]);
+
   return (
     <SVG viewBox="0 0 150 150" color1={color1} color2={color2}>
-      <linearGradient id="MyGradient" gradientTransform="rotate(90)">
+      <linearGradient id={gradientIdRef.current} gradientTransform="rotate(90)">
         <stop offset="0%" stopColor={color1} />
         <stop offset="100%" stopColor={color2} />
       </linearGradient>
@@ -110,6 +114,7 @@ const ProgressBarCircular: React.FC<Props> = ({
         r="70"
         color={color2}
         progress={filteredProgress}
+        stroke={`url(#${gradientIdRef.current})`}
         strokeLinecap="round"
       ></Circle2>
       <text x="50%" y="55%" textAnchor="middle" fill={color2}>
