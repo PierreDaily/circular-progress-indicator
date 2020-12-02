@@ -95,11 +95,25 @@ const ProgressBarCircular: React.FC<Props> = ({
   const [percentage, setPercentage] = useState(0);
   const gradientIdRef = useRef(uuidv4());
   const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
-  useEffect(() => {
-    if (percentage < filteredProgress) {
-      setTimeout(() => setPercentage((oldState) => oldState + 1), 2000 / (filteredProgress));
+
+  const requestRef = React.useRef(2);
+
+
+  const animate = (time: number) => {
+    const progressCount: number = Math.round((time * filteredProgress) / 2000);
+    if (progressCount >= filteredProgress) {
+      setPercentage(filteredProgress)
+      cancelAnimationFrame(requestRef.current);
+    } else {
+      setPercentage(progressCount);
+      requestRef.current = requestAnimationFrame(animate);
     }
-  }, [percentage, filteredProgress]);
+  }
+
+  React.useEffect(() => {
+    requestRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
 
   return (
     <SVG viewBox="0 0 150 150" color1={color1} color2={color2}>
