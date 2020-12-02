@@ -50,6 +50,7 @@ const Circle1 = styled(Circle) <Circle1Props>`
 
 interface Circle2Props {
   readonly color?: string;
+  readonly duration: number;
   readonly progress: number;
 }
 const Circle2 = styled(Circle) <Circle2Props>`
@@ -57,7 +58,7 @@ const Circle2 = styled(Circle) <Circle2Props>`
     css`
         ${animateCircle(props.progress)}
       `}
-    2s linear;
+      ${(props) => props.duration / 1000}s linear;
   stroke-dashoffset: ${(props) =>
     strokeOffset - (strokeOffset / 100) * props.progress};
   transform-origin: center;
@@ -67,18 +68,19 @@ const Circle2 = styled(Circle) <Circle2Props>`
 interface SVGProps {
   readonly color1?: string;
   readonly color2?: string;
+  readonly duration: number;
 }
 
 const SVG = styled.svg<SVGProps>`
   position: relative;
-  width: 50%;
+  width: 25%;
 
   text {
     animation: ${(props) =>
     css`
           ${textAnimation(props.color1, props.color2)}
         `}
-      2s linear;
+      ${(props) => props.duration / 1000}s linear;
     font-size: 200%;
     transform-origin: center;
   }
@@ -87,10 +89,11 @@ const SVG = styled.svg<SVGProps>`
 interface Props {
   color1?: string;
   color2?: string;
+  duration?: number
   progress: number;
 }
 
-const ProgressBarCircular: React.FC<Props> = ({ color1, color2, progress }) => {
+const ProgressBarCircular: React.FC<Props> = ({ color1, color2, duration = 4000, progress }) => {
   const [percentage, setPercentage] = useState(0);
   const gradientIdRef = useRef(uuidv4());
   const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
@@ -100,7 +103,7 @@ const ProgressBarCircular: React.FC<Props> = ({ color1, color2, progress }) => {
   const animate = useCallback(
     (time: number) => {
       const progressCount: number = Math.round(
-        (time * filteredProgress) / 2000
+        (time * filteredProgress) / duration
       );
       if (progressCount >= filteredProgress) {
         setPercentage(filteredProgress);
@@ -119,7 +122,7 @@ const ProgressBarCircular: React.FC<Props> = ({ color1, color2, progress }) => {
   }, [animate]);
 
   return (
-    <SVG viewBox="0 0 150 150" color1={color1} color2={color2}>
+    <SVG viewBox="0 0 150 150" color1={color1} color2={color2} duration={duration}>
       <linearGradient id={gradientIdRef.current} gradientTransform="rotate(90)">
         <stop offset="0%" stopColor={color1} />
         <stop offset="100%" stopColor={color2} />
@@ -130,6 +133,7 @@ const ProgressBarCircular: React.FC<Props> = ({ color1, color2, progress }) => {
         cy="75"
         r="70"
         color={color2}
+        duration={duration}
         progress={filteredProgress}
         stroke={`url(#${gradientIdRef.current})`}
         strokeLinecap="round"
