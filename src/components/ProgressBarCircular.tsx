@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { v4 as uuidv4 } from 'uuid';
-
-
+import { v4 as uuidv4 } from "uuid";
 
 const strokeOffset = 440;
 const strokeWidth = "10px";
@@ -21,7 +19,10 @@ const animateCircle = (progress: number) => keyframes`
   }
 `;
 
-const textAnimation = (color1: string = "black", color2: string = "black") => keyframes`
+const textAnimation = (
+  color1: string = "black",
+  color2: string = "black"
+) => keyframes`
   from {
     fill: ${color1};
   }
@@ -57,7 +58,8 @@ const Circle2 = styled(Circle) <Circle2Props>`
         ${animateCircle(props.progress)}
       `}
     2s linear;
-  stroke-dashoffset: ${(props) => strokeOffset - (strokeOffset / 100) * props.progress};
+  stroke-dashoffset: ${(props) =>
+    strokeOffset - (strokeOffset / 100) * props.progress};
   transform-origin: center;
   transform: rotate(-90deg);
 `;
@@ -67,7 +69,7 @@ interface SVGProps {
   readonly color2?: string;
 }
 
-const SVG = styled.svg <SVGProps>`
+const SVG = styled.svg<SVGProps>`
   position: relative;
   width: 50%;
 
@@ -75,7 +77,8 @@ const SVG = styled.svg <SVGProps>`
     animation: ${(props) =>
     css`
           ${textAnimation(props.color1, props.color2)}
-        `} 2s linear;
+        `}
+      2s linear;
     font-size: 200%;
     transform-origin: center;
   }
@@ -87,41 +90,27 @@ interface Props {
   progress: number;
 }
 
-const ProgressBarCircular: React.FC<Props> = ({
-  color1,
-  color2,
-  progress,
-}) => {
+const ProgressBarCircular: React.FC<Props> = ({ color1, color2, progress }) => {
   const [percentage, setPercentage] = useState(0);
   const gradientIdRef = useRef(uuidv4());
   const filteredProgress = Math.abs(progress) > 100 ? 100 : Math.abs(progress);
 
   const requestRef = React.useRef(2);
 
-
-  // const animate = (time: number) => {
-  //   const progressCount: number = Math.round((time * filteredProgress) / 2000);
-  //   if (progressCount >= filteredProgress) {
-  //     setPercentage(filteredProgress)
-  //     cancelAnimationFrame(requestRef.current);
-  //   } else {
-  //     setPercentage(progressCount);
-  //     requestRef.current = requestAnimationFrame(animate);
-  //   }
-  // }
-
   const animate = useCallback(
     (time: number) => {
-      const progressCount: number = Math.round((time * filteredProgress) / 2000);
+      const progressCount: number = Math.round(
+        (time * filteredProgress) / 2000
+      );
       if (progressCount >= filteredProgress) {
-        setPercentage(filteredProgress)
+        setPercentage(filteredProgress);
         cancelAnimationFrame(requestRef.current);
       } else {
         setPercentage(progressCount);
         requestRef.current = requestAnimationFrame(animate);
       }
     },
-    [filteredProgress],
+    [filteredProgress]
   );
 
   useEffect(() => {
