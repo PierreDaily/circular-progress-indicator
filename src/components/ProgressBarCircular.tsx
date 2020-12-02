@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -99,21 +99,35 @@ const ProgressBarCircular: React.FC<Props> = ({
   const requestRef = React.useRef(2);
 
 
-  const animate = (time: number) => {
-    const progressCount: number = Math.round((time * filteredProgress) / 2000);
-    if (progressCount >= filteredProgress) {
-      setPercentage(filteredProgress)
-      cancelAnimationFrame(requestRef.current);
-    } else {
-      setPercentage(progressCount);
-      requestRef.current = requestAnimationFrame(animate);
-    }
-  }
+  // const animate = (time: number) => {
+  //   const progressCount: number = Math.round((time * filteredProgress) / 2000);
+  //   if (progressCount >= filteredProgress) {
+  //     setPercentage(filteredProgress)
+  //     cancelAnimationFrame(requestRef.current);
+  //   } else {
+  //     setPercentage(progressCount);
+  //     requestRef.current = requestAnimationFrame(animate);
+  //   }
+  // }
 
-  React.useEffect(() => {
+  const animate = useCallback(
+    (time: number) => {
+      const progressCount: number = Math.round((time * filteredProgress) / 2000);
+      if (progressCount >= filteredProgress) {
+        setPercentage(filteredProgress)
+        cancelAnimationFrame(requestRef.current);
+      } else {
+        setPercentage(progressCount);
+        requestRef.current = requestAnimationFrame(animate);
+      }
+    },
+    [filteredProgress],
+  );
+
+  useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-  }, []);
+  }, [animate]);
 
   return (
     <SVG viewBox="0 0 150 150" color1={color1} color2={color2}>
