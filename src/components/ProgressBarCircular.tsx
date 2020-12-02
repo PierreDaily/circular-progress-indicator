@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
+const strokeOffset = 440;
+const strokeWidth = "10px";
+
 const animateCircle = (progress: number) => keyframes`
 0% {
     stroke-dashoffset: 440;
@@ -12,7 +15,6 @@ const animateCircle = (progress: number) => keyframes`
     stroke-dashoffset: ${440 - (440 / 100) * progress * 0.4};
   }
   100% {
-    opacity: 1;
   }
 `;
 
@@ -28,8 +30,8 @@ const textAnimation = (color1: string = "black", color2: string = "black") => ke
 
 const Circle = styled.circle`
   fill: none;
-  stroke-width: var(--stroke-width);
-  stroke-dasharray: var(--progress-bar-stroke-offset);
+  stroke-width: ${strokeWidth};
+  stroke-dasharray: ${strokeOffset};
 `;
 
 interface Circle1Props {
@@ -53,10 +55,7 @@ const Circle2 = styled(Circle) <Circle2Props>`
       `}
     2s linear;
   stroke: url(#MyGradient);
-  stroke-dashoffset: calc(
-    var(--progress-bar-stroke-offset) -
-      ((var(--progress-bar-stroke-offset) / 100) * ${(props) => props.progress})
-  );
+  stroke-dashoffset: ${(props) => strokeOffset - (strokeOffset / 100) * props.progress};
   transform-origin: center;
   transform: rotate(-90deg);
 `;
@@ -67,8 +66,6 @@ interface SVGProps {
 }
 
 const SVG = styled.svg <SVGProps>`
-  --progress-bar-stroke-offset: 440;
-  --stroke-width: 10px;
   position: relative;
   width: 50%;
 
