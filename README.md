@@ -7,6 +7,7 @@ A demo is available here: https://pedantic-wright-d0262a.netlify.app
 
 - color1: **string**,first color of the linear gradient.
 - color2: **string**, second color of the linear gradient.
+- duration: **number**, animation duration in millisecond
 - progress: **number**, 0-100.
 
 ## Available Scripts
