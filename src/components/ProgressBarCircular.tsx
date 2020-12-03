@@ -59,8 +59,12 @@ const Circle2 = styled(Circle) <Circle2Props>`
         ${animateCircle(props.progress)}
       `}
       ${(props) => props.duration / 1000}s linear;
-  stroke-dashoffset: ${(props) =>
-    strokeOffset - (strokeOffset / 100) * props.progress};
+  stroke-dashoffset: ${(props) => {
+    const result = strokeOffset - (strokeOffset / 100) * props.progress;
+    // Enforce no negative value for Webkit
+    return result > 0 ? result : 0;
+  }
+  };
   transform-origin: center;
   transform: rotate(-90deg);
 `;
